@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_15dp"
+    android:background="@drawable/bg_blue_linear_20_border_20">
+
+    <TextView
+        android:id="@+id/tv_exercise_name"
+        style="@style/TextExerciseName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_thumbnail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lowebody Workout" />
+
+    <TextView
+        android:id="@+id/tv_exercise_content"
+        style="@style/TextExerciseContent"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_thumbnail"
+        app:layout_constraintStart_toStartOf="@id/tv_exercise_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_exercise_name"
+        tools:text="12 Exercises | 40mins" />
+
+    <TextView
+        android:id="@+id/btn_view_more"
+        style="@style/TextButtonExercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:layout_marginBottom="@dimen/dimen_18dp"
+        android:background="@drawable/bg_button_white"
+        android:paddingHorizontal="@dimen/dimen_20dp"
+        android:paddingVertical="@dimen/dimen_10dp"
+        android:text="@string/view_more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_exercise_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_exercise_content" />
+
+    <ImageView
+        android:id="@+id/iv_thumbnail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:adjustViewBounds="true"
+        android:elevation="@dimen/dimen_10dp"
+        android:src="@drawable/ic_lowebody_workout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/circle_background_exercise"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
