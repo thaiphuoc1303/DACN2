@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vision.exercise.vision.model.Exercise
 import com.vision.exercise.databinding.ItemExerciseBinding
+import com.vision.exercise.vision.util.DrawableUtils.getType
 
 class ListExerciseAdapter(
     private val listExercise: List<Exercise>,
@@ -17,7 +18,8 @@ class ListExerciseAdapter(
             binding.apply {
                 tvExerciseName.text = item.name
                 tvExerciseContent.text = item.description
-                ivThumbnail.setImageResource(item.thumbnail)
+                // TODO:
+                ivThumbnail.setImageResource(getType(item.name))
                 btnViewMore.setOnClickListener {
                     itemClickCallback.invoke(item)
                 }

@@ -6,6 +6,7 @@ import android.graphics.Paint
 import com.vision.exercise.vision.demo.GraphicOverlay.Graphic
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseLandmark
+import com.vision.exercise.vision.demo.GraphicOverlay
 import java.lang.Math.max
 import java.lang.Math.min
 import java.util.Locale
@@ -13,15 +14,15 @@ import java.util.Locale
 /** Draw the detected pose in preview. */
 class PoseGraphic
 internal constructor(
-  overlay: com.vision.exercise.vision.demo.GraphicOverlay,
+  overlay: GraphicOverlay,
   private val pose: Pose,
   private val showInFrameLikelihood: Boolean,
   private val visualizeZ: Boolean,
   private val rescaleZForVisualization: Boolean,
   private val poseClassification: List<String>
 ) : Graphic(overlay) {
-  private var zMin = java.lang.Float.MAX_VALUE
-  private var zMax = java.lang.Float.MIN_VALUE
+  private var zMin = Float.MAX_VALUE
+  private var zMax = Float.MIN_VALUE
   private val classificationTextPaint: Paint
   private val leftPaint: Paint
   private val rightPaint: Paint
@@ -212,6 +213,6 @@ internal constructor(
     private val DOT_RADIUS = 8.0f
     private val IN_FRAME_LIKELIHOOD_TEXT_SIZE = 30.0f
     private val STROKE_WIDTH = 10.0f
-    private val POSE_CLASSIFICATION_TEXT_SIZE = 60.0f
+    private val POSE_CLASSIFICATION_TEXT_SIZE = 20.0f
   }
 }

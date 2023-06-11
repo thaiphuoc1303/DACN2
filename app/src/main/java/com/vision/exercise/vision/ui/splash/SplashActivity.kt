@@ -1,14 +1,19 @@
 package com.vision.exercise.vision.ui.splash
 
 import android.content.Intent
+import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.lifecycle.asLiveData
 import com.vision.exercise.vision.base.BaseActivity
 import com.vision.exercise.vision.base.BaseInput
 import com.vision.exercise.vision.base.ViewModelProviderFactory
 import com.vision.exercise.databinding.ActivitySplashBinding
+import com.vision.exercise.vision.model.ExerciseExt
 import com.vision.exercise.vision.ui.home.HomeActivity
 import com.vision.exercise.vision.ui.onboarding.OnBoardingActivity
+import java.util.logging.Handler
+import kotlin.concurrent.thread
 
 class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
     override fun getLazyBinding() = lazy { ActivitySplashBinding.inflate(layoutInflater) }

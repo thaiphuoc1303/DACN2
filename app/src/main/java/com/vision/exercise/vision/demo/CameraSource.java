@@ -15,7 +15,8 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import com.google.android.gms.common.images.Size;
-import com.vision.exercise.vision.demo.preference.PreferenceUtils;
+import com.vision.exercise.vision.util.PreferenceUtils;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

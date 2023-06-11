@@ -1,5 +1,6 @@
 package com.vision.exercise.vision.ui.home
 
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.vision.exercise.vision.base.BaseInput

@@ -28,8 +28,8 @@ public class PoseClassifierProcessor {
   // Specify classes for which we want rep counting.
   // These are the labels in the given {@code POSE_SAMPLES_FILE}. You can set your own class labels
   // for your pose samples.
-  private static final String PUSHUPS_CLASS = "pushups_down";
-  private static final String SQUATS_CLASS = "squats_down";
+  public static final String PUSHUPS_CLASS = "pushups_down";
+  public static final String SQUATS_CLASS = "squats_down";
   private static final String[] POSE_CLASSES = {
     PUSHUPS_CLASS, SQUATS_CLASS
   };
@@ -110,27 +110,59 @@ public class PoseClassifierProcessor {
           // Play a fun beep when rep counter updates.
           ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
           tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-          lastRepResult = String.format(
-              Locale.US, "%s : %d reps", repCounter.getClassName(), repsAfter);
+          result.add(repCounter.getClassName());
+          result.add(repsAfter+"");
+//          lastRepResult = String.format(Locale.US, "%s : %d reps", repCounter.getClassName(), repsAfter);
           break;
         }
       }
-      result.add(lastRepResult);
+//      result.add(lastRepResult);
     }
 
     // Add maxConfidence class of current frame to result if pose is found.
     if (!pose.getAllPoseLandmarks().isEmpty()) {
       String maxConfidenceClass = classification.getMaxConfidenceClass();
+      float confidence = classification.getClassConfidence(maxConfidenceClass) / poseClassifier.confidenceRange();
       String maxConfidenceClassResult = String.format(
           Locale.US,
           "%s : %.2f confidence",
           maxConfidenceClass,
           classification.getClassConfidence(maxConfidenceClass)
               / poseClassifier.confidenceRange());
-      result.add(maxConfidenceClassResult);
+      result.add(maxConfidenceClass);
+      result.add(Float.toString(confidence));
+//      if (classification instanceof )
+//      PoseResult poseResult = new PoseResult(1, 1.2f);
+//      result.add(maxConfidenceClassResult);
     }
 
     return result;
+  }
+
+  class PoseResult {
+    private int type;
+    private float confidence;
+
+    public PoseResult(int type, float confidence) {
+      this.type = type;
+      this.confidence = confidence;
+    }
+
+    public int getType() {
+      return type;
+    }
+
+    public void setType(int type) {
+      this.type = type;
+    }
+
+    public float getConfidence() {
+      return confidence;
+    }
+
+    public void setConfidence(float confidence) {
+      this.confidence = confidence;
+    }
   }
 
 }

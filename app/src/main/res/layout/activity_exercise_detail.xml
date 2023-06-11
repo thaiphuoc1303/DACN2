@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:background="@color/white">
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/ct_header"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingHorizontal="@dimen/dimen_16dp"
+		android:paddingVertical="8dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+		
+		<ImageView
+			android:id="@+id/btn_back"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/bg_grey_border"
+			android:padding="@dimen/dimen_8dp"
+			android:src="@drawable/ic_close"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+		
+		<ImageView
+			android:id="@+id/btn_more"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/bg_grey_border"
+			android:padding="@dimen/dimen_8dp"
+			android:src="@drawable/ic_more"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	<androidx.cardview.widget.CardView
+		android:id="@+id/cv_player"
+		android:layout_width="match_parent"
+		android:layout_height="300dp"
+		android:layout_margin="@dimen/dimen_16dp"
+		android:background="@color/gray_2"
+		app:cardCornerRadius="@dimen/dimen_16dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/ct_header">
+		
+		<com.google.android.exoplayer2.ui.PlayerView
+			android:id="@+id/player_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:resize_mode="fit"
+			app:use_controller="false" />
+	</androidx.cardview.widget.CardView>
+	
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/dimen_0dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/cv_player">
+		
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingHorizontal="@dimen/dimen_30dp">
+			
+			<TextView
+				android:id="@+id/tv_exercise_name"
+				style="@style/TextInterSemiBold"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/dimen_32dp"
+				tools:text="Exercise Name"
+				android:textSize="@dimen/text_size_16sp" />
+			
+			<TextView
+				android:id="@+id/tv_level"
+				style="@style/TextInterMedium"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				tools:text="Easy | 390 Calories Burn"
+				android:textSize="@dimen/text_size_12sp" />
+			
+			<TextView
+				style="@style/TextInterSemiBold"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/dimen_30dp"
+				android:text="@string/descriptions"
+				android:textSize="@dimen/text_size_16sp" />
+			
+			<TextView
+				android:id="@+id/tv_description"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/dimen_16dp"
+				android:text="A jumping jack, also known as a star jump and called a"
+				/>
+			
+			<TextView
+				style="@style/TextInterSemiBold"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/dimen_16dp"
+				android:text="Custom Repetitions"
+				android:textSize="@dimen/text_size_16sp" />
+			
+			<com.shawnlin.numberpicker.NumberPicker
+				android:id="@+id/np_repetition"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:np_dividerColor="@color/blue_200"
+				app:np_height="@dimen/dimen_40dp"
+				app:np_max="50"
+				app:np_min="5"
+				app:np_orientation="horizontal"
+				app:np_selectedTextColor="@color/blue_300"
+				app:np_selectedTextSize="@dimen/text_size_18sp"
+				app:np_textColor="@color/blue_300"
+				app:np_textSize="@dimen/text_size_16sp"
+				app:np_value="15"
+				app:np_wheelItemCount="5" />
+			
+			<TextView
+				android:id="@+id/btn_start"
+				style="@style/TextInterSemiBold"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginVertical="@dimen/dimen_30dp"
+				android:background="@drawable/bg_blue_linear_border"
+				android:paddingVertical="@dimen/dimen_16dp"
+				android:text="@string/start_workout"
+				android:textAlignment="center"
+				android:textColor="@color/white"
+				android:textSize="@dimen/text_size_16sp" />
+		</LinearLayout>
+	</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

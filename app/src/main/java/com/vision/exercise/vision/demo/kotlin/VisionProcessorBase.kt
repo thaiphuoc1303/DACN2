@@ -22,7 +22,11 @@ import com.google.android.odml.image.MediaMlImageBuilder
 import com.google.android.odml.image.MlImage
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.common.InputImage
+import com.vision.exercise.vision.common.SHOW_FPS
+import com.vision.exercise.vision.common.SHOW_INFO_CAMERA
+import com.vision.exercise.vision.demo.*
 import com.vision.exercise.vision.util.BitmapUtils
+import com.vision.exercise.vision.util.PreferenceUtils
 import java.lang.Math.max
 import java.lang.Math.min
 import java.nio.ByteBuffer
@@ -37,7 +41,7 @@ import java.util.TimerTask
  * @param <T> The type of the detected feature.
  */
 abstract class VisionProcessorBase<T>(context: Context) :
-    com.vision.exercise.vision.demo.VisionImageProcessor {
+  VisionImageProcessor {
 
   companion object {
     const val MANUAL_TESTING_LOG = "LogTagForTest"
@@ -47,7 +51,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
   private var activityManager: ActivityManager =
     context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
   private val fpsTimer = Timer()
-  private val executor = com.vision.exercise.vision.demo.ScopedExecutor(TaskExecutors.MAIN_THREAD)
+  private val executor = ScopedExecutor(TaskExecutors.MAIN_THREAD)
 
   // Whether this processor is already shut down
   private var isShutdown = false
@@ -67,10 +71,10 @@ abstract class VisionProcessorBase<T>(context: Context) :
 
   // To keep the latest images and its metadata.
   @GuardedBy("this") private var latestImage: ByteBuffer? = null
-  @GuardedBy("this") private var latestImageMetaData: com.vision.exercise.vision.demo.FrameMetadata? = null
+  @GuardedBy("this") private var latestImageMetaData: FrameMetadata? = null
   // To keep the images and metadata in process.
   @GuardedBy("this") private var processingImage: ByteBuffer? = null
-  @GuardedBy("this") private var processingMetaData: com.vision.exercise.vision.demo.FrameMetadata? = null
+  @GuardedBy("this") private var processingMetaData: FrameMetadata? = null
 
   init {
     fpsTimer.scheduleAtFixedRate(
@@ -86,7 +90,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
   }
 
   // -----------------Code for processing single still image----------------------------------------
-  override fun processBitmap(bitmap: Bitmap?, graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay) {
+  override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay) {
     val frameStartMs = SystemClock.elapsedRealtime()
 
     if (isMlImageEnabled(graphicOverlay.context)) {
@@ -95,7 +99,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
         mlImage,
         graphicOverlay,
         /* originalCameraImage= */ null,
-        /* shouldShowFps= */ false,
+        /* shouldShowFps= */ SHOW_FPS,
         frameStartMs
       )
       mlImage.close()
@@ -106,7 +110,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
       InputImage.fromBitmap(bitmap!!, 0),
       graphicOverlay,
       /* originalCameraImage= */ null,
-      /* shouldShowFps= */ false,
+      /* shouldShowFps= */ SHOW_FPS,
       frameStartMs
     )
   }
@@ -115,8 +119,8 @@ abstract class VisionProcessorBase<T>(context: Context) :
   @Synchronized
   override fun processByteBuffer(
       data: ByteBuffer?,
-      frameMetadata: com.vision.exercise.vision.demo.FrameMetadata?,
-      graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay
+      frameMetadata: FrameMetadata?,
+      graphicOverlay: GraphicOverlay
   ) {
     latestImage = data
     latestImageMetaData = frameMetadata
@@ -126,7 +130,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
   }
 
   @Synchronized
-  private fun processLatestImage(graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay) {
+  private fun processLatestImage(graphicOverlay: GraphicOverlay) {
     processingImage = latestImage
     processingMetaData = latestImageMetaData
     latestImage = null
@@ -137,15 +141,15 @@ abstract class VisionProcessorBase<T>(context: Context) :
   }
 
   private fun processImage(
-      data: ByteBuffer,
-      frameMetadata: com.vision.exercise.vision.demo.FrameMetadata,
-      graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay
+    data: ByteBuffer,
+    frameMetadata: FrameMetadata,
+    graphicOverlay: GraphicOverlay
   ) {
     val frameStartMs = SystemClock.elapsedRealtime()
     // If live viewport is on (that is the underneath surface view takes care of the camera preview
     // drawing), skip the unnecessary bitmap creation that used for the manual preview drawing.
     val bitmap =
-      if (com.vision.exercise.vision.demo.preference.PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) null
+      if (PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) null
       else BitmapUtils.getBitmap(data, frameMetadata)
 
     if (isMlImageEnabled(graphicOverlay.context)) {
@@ -158,7 +162,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
           )
           .setRotation(frameMetadata.rotation)
           .build()
-      requestDetectInImage(mlImage, graphicOverlay, bitmap, /* shouldShowFps= */ true, frameStartMs)
+      requestDetectInImage(mlImage, graphicOverlay, bitmap, /* shouldShowFps= */ SHOW_FPS, frameStartMs)
         .addOnSuccessListener(executor) { processLatestImage(graphicOverlay) }
 
       // This is optional. Java Garbage collection can also close it eventually.
@@ -176,7 +180,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
       ),
       graphicOverlay,
       bitmap,
-      /* shouldShowFps= */ true,
+      /* shouldShowFps= */ false,
       frameStartMs
     )
       .addOnSuccessListener(executor) { processLatestImage(graphicOverlay) }
@@ -185,13 +189,13 @@ abstract class VisionProcessorBase<T>(context: Context) :
   // -----------------Code for processing live preview frame from CameraX API-----------------------
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   @ExperimentalGetImage
-  override fun processImageProxy(image: ImageProxy, graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay) {
+  override fun processImageProxy(image: ImageProxy, graphicOverlay: GraphicOverlay) {
     val frameStartMs = SystemClock.elapsedRealtime()
     if (isShutdown) {
       return
     }
     var bitmap: Bitmap? = null
-    if (!com.vision.exercise.vision.demo.preference.PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) {
+    if (!PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) {
       bitmap = BitmapUtils.getBitmap(image)
     }
 
@@ -202,7 +206,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
         mlImage,
         graphicOverlay,
         /* originalCameraImage= */ bitmap,
-        /* shouldShowFps= */ true,
+        /* shouldShowFps= */ SHOW_FPS,
         frameStartMs
       )
         // When the image is from CameraX analysis use case, must call image.close() on received
@@ -231,7 +235,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
   // -----------------Common processing logic-------------------------------------------------------
   private fun requestDetectInImage(
       image: InputImage,
-      graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay,
+      graphicOverlay: GraphicOverlay,
       originalCameraImage: Bitmap?,
       shouldShowFps: Boolean,
       frameStartMs: Long
@@ -247,7 +251,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
 
   private fun requestDetectInImage(
       image: MlImage,
-      graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay,
+      graphicOverlay: GraphicOverlay,
       originalCameraImage: Bitmap?,
       shouldShowFps: Boolean,
       frameStartMs: Long
@@ -263,7 +267,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
 
   private fun setUpListener(
       task: Task<T>,
-      graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay,
+      graphicOverlay: GraphicOverlay,
       originalCameraImage: Bitmap?,
       shouldShowFps: Boolean,
       frameStartMs: Long
@@ -318,16 +322,16 @@ abstract class VisionProcessorBase<T>(context: Context) :
           graphicOverlay.clear()
           if (originalCameraImage != null) {
             graphicOverlay.add(
-                com.vision.exercise.vision.demo.CameraImageGraphic(
+                CameraImageGraphic(
                     graphicOverlay,
                     originalCameraImage
                 )
             )
           }
           this@VisionProcessorBase.onSuccess(results, graphicOverlay)
-          if (!com.vision.exercise.vision.demo.preference.PreferenceUtils.shouldHideDetectionInfo(graphicOverlay.context)) {
+          if (SHOW_INFO_CAMERA) {
             graphicOverlay.add(
-                com.vision.exercise.vision.demo.InferenceInfoGraphic(
+                InferenceInfoGraphic(
                     graphicOverlay,
                     currentFrameLatencyMs,
                     currentDetectorLatencyMs,
@@ -388,7 +392,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
     )
   }
 
-  protected abstract fun onSuccess(results: T, graphicOverlay: com.vision.exercise.vision.demo.GraphicOverlay)
+  protected abstract fun onSuccess(results: T, graphicOverlay: GraphicOverlay)
 
   protected abstract fun onFailure(e: Exception)
 

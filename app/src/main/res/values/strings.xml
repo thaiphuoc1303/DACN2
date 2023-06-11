@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Exercise</string>
+    <string name="app_name" translatable="false">MasmasFit</string>
     <string name="java_entry_title" translatable="false">Run the ML Kit quickstart written in Java</string>
     <string name="kotlin_entry_title" translatable="false">Run the ML Kit quickstart written in Kotlin</string>
     <string name="ok" translatable="false">OK</string>
@@ -183,5 +183,20 @@
     <string name="this_app_needs_camera_permission">This app needs Camera permission</string>
     <string name="go_to_settings">Go to settings?</string>
     <string name="necessary_permission">Necessary Permission</string>
+	<string name="resize">Resize</string>
+	<string name="workout_tracker">Workout Tracker</string>
+	<string name="descriptions">Descriptions</string>
+	<string name="start_workout">Start Workout</string>
+    <string name="pause">Pause</string>
+    <string name="previous">Previous</string>
+    <string name="skip">Skip</string>
+    <string name="resume">Resume</string>
+    <string name="finish">Finish</string>
+    <string name="you_have_completed_the_exercise">You have completed the exercise</string>
+    <string name="today_format">Today, \u0020</string>
+    <string name="yesterday_format">Yesterday, \u0020</string>
+    <string name="training_history">Training history</string>
+    <string name="last_practice">Last practice</string>
+    <string name="continue_training">Continue training</string>
 
 </resources>

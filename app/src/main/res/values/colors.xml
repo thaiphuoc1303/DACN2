@@ -10,6 +10,7 @@
     <color name="gray">#BFBFBF</color>
     <color name="blue">#4286f4</color>
     <color name="red">#f44242</color>
+    <color name="transparent">#00FFFFFF</color>
     
     
     // New Color
@@ -27,8 +28,9 @@
     <color name="gray_3">#DDDADA</color>
     <color name="gray_7">#373737</color>
     
-    <color name="grey_100">#F7F8F8</color>
+    <color name="grey_100">#F8F8F8</color>
     <color name="grey_200">#F9F9F9</color>
+    <color name="grey_350">#80BFBFBF</color>
     
     <color name="light_pink_100">#F5CAC3</color>
     
@@ -56,4 +58,26 @@
     <color name="green_300">#42D742</color>
     
     <color name="linen_100">#F7EDE2</color>
+    
+    // chart
+    <color name="chart_purple">#AD3AED</color>
+    <color name="chart_cyan">#71E3E9</color>
+    <color name="chart_red">#D43467</color>
+    <color name="chart_gray">#78758A</color>
+    <color name="chart_yellow">#EDD93A</color>
+    <color name="chart_orange">#EE6B58</color>
+    <color name="chart_green">#316B4F</color>
+    <color name="linkWithoutButton">#ADB6E1</color>
+    <color name="gray400WithOpacity14">#12707070</color>
+
+    <array name="ChartColumnColor">
+        <item>@color/chart_purple</item>
+        <item>@color/chart_cyan</item>
+        <item>@color/chart_red</item>
+        <item>@color/chart_gray</item>
+        <item>@color/chart_yellow</item>
+        <item>@color/chart_orange</item>
+        <item>@color/chart_green</item>
+    </array>
+
 </resources>

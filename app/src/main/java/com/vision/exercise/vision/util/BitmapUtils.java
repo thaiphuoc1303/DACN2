@@ -71,7 +71,6 @@ public class BitmapUtils {
   }
 
   /** Converts a YUV_420_888 image from CameraX API to a bitmap. */
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Nullable
   @ExperimentalGetImage
   public static Bitmap getBitmap(ImageProxy image) {

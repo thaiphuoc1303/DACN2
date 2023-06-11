@@ -2,6 +2,7 @@
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:actionMenuTextAppearance">@style/MenuTextAppearance</item>
     </style>
     
     <style name="ToolbarColorBlack" parent="Theme.AppCompat.Light">
@@ -69,6 +70,7 @@
     <style name="TextExerciseContent" parent="TextInterMedium">
         <item name="android:textSize">@dimen/text_size_12sp</item>
         <item name="android:textColor">@color/gray_1</item>
+        <item name="drawableTint">@color/gray_1</item>
     </style>
     
     <style name="TextButtonExercise" parent="TextInterMedium">

@@ -1,41 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="@dimen/dimen_30dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:theme="@style/ToolbarColorBlack"
             android:contentInsetStart="0dp"
             android:contentInsetLeft="0dp"
+            android:theme="@style/ToolbarColorBlack"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp">
 
             <TextView
                 android:id="@+id/tv_title"
+                style="@style/TextTitleMediumStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/statistical"
-                android:textAlignment="center"
-                style="@style/TextTitleMediumStyle"/>
+                android:textAlignment="center" />
         </androidx.appcompat.widget.Toolbar>
     </FrameLayout>
-    <TextView
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/meal_planner"
-        style="@style/TextTitleMediumStyle" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sleep_tracker"
-        style="@style/TextTitleMediumStyle" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.straiberry.android.charts.view.BarChartView
+                android:id="@+id/chart_week"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:visibility="gone"
+                app:chart_barsColorsList="@array/ChartColumnColor"
+                app:chart_barsRadius="17dp"
+                app:chart_grid="horizontal"
+                app:chart_gridColorY="@color/gray400WithOpacity14"
+                app:chart_gridEffect="dotted"
+                app:chart_labelsSize="8sp"
+                app:chart_labelsXColor="@color/linkWithoutButton"
+                app:chart_labelsYColor="@color/linkWithoutButton"
+                app:chart_spacing="20dp" />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <TextView
+                style="@style/TextTitleMediumStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dimen_24dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                android:text="@string/training_history" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_practice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tv_view_more_history"
+                style="@style/TextExerciseContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                android:gravity="end|center_vertical"
+                android:paddingHorizontal="@dimen/dimen_12dp"
+                android:paddingVertical="@dimen/dimen_4dp"
+                android:text="@string/view_more"
+                app:drawableEndCompat="@drawable/ic_next" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

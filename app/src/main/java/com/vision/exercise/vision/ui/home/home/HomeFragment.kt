@@ -9,14 +9,15 @@ import com.vision.exercise.vision.ui.camera.TestCameraXActivity
 import com.vision.exercise.vision.ui.home.HomeViewModel
 import com.vision.exercise.R
 import com.vision.exercise.databinding.FragmentHomeBinding
+import com.vision.exercise.vision.common.EXERCISE_KEY
+import com.vision.exercise.vision.common.LIST_EXERCISE_KEY
+import com.vision.exercise.vision.ui.exercise_details.ExerciseDetailActivity
+import com.vision.exercise.vision.ui.pose.CameraXLivePreviewActivity
+import com.vision.exercise.vision.ui.target.TodayTargetActivity
 
 class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private lateinit var mAdapter: ListExerciseAdapter
-    private val listExercise = arrayListOf<Exercise>(
-        Exercise("Fullbody Workout", "11 Exercises | 32 mins", R.drawable.ic_skipping),
-        Exercise("Lowebody Workout", "12 Exercises | 40 mins", R.drawable.ic_lowebody_workout),
-        Exercise("AB Workout", "14 Exercises | 20 mins", R.drawable.ic_ab_workout)
-    )
+    private val listExercise = arrayListOf<Exercise>()
 
     companion object{
         fun newInstance() = HomeFragment()
@@ -35,8 +36,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun initListener() {
         binding.apply {
             btnCheckTodayTarget.setOnClickListener {
-                Intent(context, TestCameraXActivity::class.java).apply {
-                    startActivity(this)
+                context?.let {
+                    Intent(it, TodayTargetActivity::class.java).apply {
+                        putExtra(LIST_EXERCISE_KEY, listExercise)
+                        startActivity(this)
+                    }
                 }
             }
         }
@@ -46,17 +50,24 @@ class HomeFragment: BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         binding.apply {
             rcExercise.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             mAdapter = ListExerciseAdapter(listExercise) {
-                // TODO
+                startDetailExercise(it)
             }
             rcExercise.adapter = mAdapter
         }
     }
 
+    private fun startDetailExercise(exercise: Exercise) {
+        Intent(context, ExerciseDetailActivity::class.java).apply {
+            putExtra(EXERCISE_KEY, exercise.convertToExt())
+            startActivity(this)
+        }
+    }
+
     private fun observers() {
-//        viewModel.getExercises().observe(this) {
-//            listExercise.clear()
-//            listExercise.addAll(it)
-//            mAdapter.notifyDataSetChanged()
-//        }
+        viewModel.getExercises().observe(this) {
+            listExercise.clear()
+            listExercise.addAll(it)
+            mAdapter.notifyDataSetChanged()
+        }
     }
 }

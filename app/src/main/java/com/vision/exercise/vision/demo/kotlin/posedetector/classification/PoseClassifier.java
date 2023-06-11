@@ -42,6 +42,8 @@ public class PoseClassifier {
     this.axesWeights = axesWeights;
   }
 
+
+  // Lấy ra List các tọa độ 3D của Pose
   private static List<PointF3D> extractPoseLandmarks(Pose pose) {
     List<PointF3D> landmarks = new ArrayList<>();
     for (PoseLandmark poseLandmark : pose.getAllPoseLandmarks()) {
@@ -87,7 +89,8 @@ public class PoseClassifier {
 
     // Keeps max distance on top so we can pop it when top_k size is reached.
     PriorityQueue<Pair<PoseSample, Float>> maxDistances = new PriorityQueue<>(
-        maxDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second));
+        maxDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second)
+    );
     // Retrieve top K poseSamples by least distance to remove outliers.
     for (PoseSample poseSample : poseSamples) {
       List<PointF3D> sampleEmbedding = poseSample.getEmbedding();

@@ -12,6 +12,16 @@
         app:layout_constraintBottom_toBottomOf="@id/gl_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/gl_vertical"/>
+    
+    <com.vision.exercise.vision.demo.GraphicOverlay
+        android:id="@+id/graphic_overlay"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="@dimen/dimen_0dp"
+        android:elevation="@dimen/dimen_1dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/gl_horizontal"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
