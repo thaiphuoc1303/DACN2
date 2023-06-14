@@ -12,7 +12,8 @@ class ExerciseExt(
     var thumbnail: String,
     var videoUrl: String,
     var steps: List<StepExt>,
-    var type: Int = 0
+    var type: Int = 0,
+    var category: String = ""
 ): Parcelable {
     @Parcelize
     data class StepExt(

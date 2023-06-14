@@ -23,19 +23,14 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/statistical"
+                android:text="@string/profile"
                 android:textAlignment="center"
                 style="@style/TextTitleMediumStyle"/>
         </androidx.appcompat.widget.Toolbar>
     </FrameLayout>
-    <TextView
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/meal_planner"
-        style="@style/TextTitleMediumStyle" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sleep_tracker"
-        style="@style/TextTitleMediumStyle" />
+        android:layout_height="match_parent"
+        android:src="@drawable/pic_coming_son" />
 </LinearLayout>

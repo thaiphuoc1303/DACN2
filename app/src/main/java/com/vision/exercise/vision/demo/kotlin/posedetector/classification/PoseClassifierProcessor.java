@@ -18,16 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Accepts a stream of {@link Pose} for classification and Rep counting.
- */
+
 public class PoseClassifierProcessor {
   private static final String TAG = "PoseClassifierProcessor";
-  private static final String POSE_SAMPLES_FILE = "pose/fitness_pose_samples.csv";
+  private static final String POSE_SAMPLES_FILE = "pose/fitness_pose.csv";
 
-  // Specify classes for which we want rep counting.
-  // These are the labels in the given {@code POSE_SAMPLES_FILE}. You can set your own class labels
-  // for your pose samples.
+
   public static final String PUSHUPS_CLASS = "pushups_down";
   public static final String SQUATS_CLASS = "squats_down";
   private static final String[] POSE_CLASSES = {
@@ -78,62 +74,20 @@ public class PoseClassifierProcessor {
     }
   }
 
-  /**
-   * Given a new {@link Pose} input, returns a list of formatted {@link String}s with Pose
-   * classification results.
-   *
-   * <p>Currently it returns up to 2 strings as following:
-   * 0: PoseClass : X reps
-   * 1: PoseClass : [0.0-1.0] confidence
-   */
+
   @WorkerThread
   public List<String> getPoseResult(Pose pose) {
     Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
     List<String> result = new ArrayList<>();
     ClassificationResult classification = poseClassifier.classify(pose);
 
-    // Update {@link RepetitionCounter}s if {@code isStreamMode}.
-    if (isStreamMode) {
-      // Feed pose to smoothing even if no pose found.
-      classification = emaSmoothing.getSmoothedResult(classification);
 
-      // Return early without updating repCounter if no pose found.
-      if (pose.getAllPoseLandmarks().isEmpty()) {
-        result.add(lastRepResult);
-        return result;
-      }
-
-      for (RepetitionCounter repCounter : repCounters) {
-        int repsBefore = repCounter.getNumRepeats();
-        int repsAfter = repCounter.addClassificationResult(classification);
-        if (repsAfter > repsBefore) {
-          // Play a fun beep when rep counter updates.
-          ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-          tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-          result.add(repCounter.getClassName());
-          result.add(repsAfter+"");
-//          lastRepResult = String.format(Locale.US, "%s : %d reps", repCounter.getClassName(), repsAfter);
-          break;
-        }
-      }
-//      result.add(lastRepResult);
-    }
-
-    // Add maxConfidence class of current frame to result if pose is found.
     if (!pose.getAllPoseLandmarks().isEmpty()) {
       String maxConfidenceClass = classification.getMaxConfidenceClass();
       float confidence = classification.getClassConfidence(maxConfidenceClass) / poseClassifier.confidenceRange();
-      String maxConfidenceClassResult = String.format(
-          Locale.US,
-          "%s : %.2f confidence",
-          maxConfidenceClass,
-          classification.getClassConfidence(maxConfidenceClass)
-              / poseClassifier.confidenceRange());
+
       result.add(maxConfidenceClass);
       result.add(Float.toString(confidence));
-//      if (classification instanceof )
-//      PoseResult poseResult = new PoseResult(1, 1.2f);
-//      result.add(maxConfidenceClassResult);
     }
 
     return result;

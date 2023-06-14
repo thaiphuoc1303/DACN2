@@ -25,6 +25,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.vision.exercise.vision.common.SHOW_FPS
 import com.vision.exercise.vision.common.SHOW_INFO_CAMERA
 import com.vision.exercise.vision.demo.*
+import com.vision.exercise.vision.extension.addOnSuccessListener
 import com.vision.exercise.vision.util.BitmapUtils
 import com.vision.exercise.vision.util.PreferenceUtils
 import java.lang.Math.max

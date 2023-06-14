@@ -20,4 +20,8 @@ class AppDBHelper(application: Application): DBHelper {
     override fun selectAllPractice(): LiveData<List<Practice>> {
         return appDatabase.practiceDao.selectAllPractice()
     }
+
+    override fun selectLastPractice(): LiveData<Practice?> {
+        return appDatabase.practiceDao.selectLastPractice()
+    }
 }

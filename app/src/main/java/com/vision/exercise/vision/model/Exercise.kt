@@ -12,9 +12,10 @@ data class Exercise(
     var thumbnail: String = EMPTY_STRING,
     var videoUrl: String = EMPTY_STRING,
     var steps: List<Step> = arrayListOf(),
-    var type: Int = 0
+    var type: Int = 0,
+    var category: String = ""
 ):Parcelable {
-    constructor() : this("", "",  0, "", "", arrayListOf(),0)
+    constructor() : this("", "",  0, "", "", arrayListOf(),0, "")
     @Parcelize
     data class Step(
         var pose: String = EMPTY_STRING,
@@ -41,7 +42,8 @@ data class Exercise(
             this.thumbnail,
             this.videoUrl,
             listStepExt,
-            this.type
+            this.type,
+            this.category
         )
     }
 }

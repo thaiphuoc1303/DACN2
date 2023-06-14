@@ -7,4 +7,6 @@ import io.reactivex.rxjava3.core.Single
 interface DBHelper {
     fun insertPractice(practice: Practice): Single<Long>
     fun selectAllPractice(): LiveData<List<Practice>>
+
+    fun selectLastPractice(): LiveData<Practice?>
 }

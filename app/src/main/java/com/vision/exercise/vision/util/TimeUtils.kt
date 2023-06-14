@@ -11,7 +11,7 @@ object TimeUtils {
     private const val HOUR_FORMAT = "%02d:%02d:%02d"
     private const val MINUTE_FORMAT = "%02d:%02d"
     private const val SECOND_FORMAT = "00:%02d"
-    private const val DAY_OF_WEEK_FORMAT = "EEEE"
+    private const val DAY_OF_WEEK_FORMAT = "EEE"
     const val EMPTY_TIME = "00:00"
 
     private const val HOUR = 1000L * 60 * 60

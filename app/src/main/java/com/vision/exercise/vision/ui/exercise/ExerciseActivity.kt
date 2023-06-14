@@ -35,6 +35,7 @@ import com.vision.exercise.R
 import com.vision.exercise.vision.ui.home.HomeActivity
 import com.vision.exercise.vision.widget.AlertDialog
 import com.vision.exercise.vision.widget.ConfirmDialog
+import com.vision.exercise.vision.widget.DoneDialog
 
 class ExerciseActivity : BaseActivity<ActivityExerciseBinding, ExerciseViewModel>() {
     companion object{
@@ -43,7 +44,7 @@ class ExerciseActivity : BaseActivity<ActivityExerciseBinding, ExerciseViewModel
         private const val TAG = "ExerciseActivity"
     }
 
-    private var finishDialog: AlertDialog? = null
+    private var finishDialog: DoneDialog? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var previewUseCase: Preview? = null
     private var analysisUseCase: ImageAnalysis? = null
@@ -329,7 +330,7 @@ class ExerciseActivity : BaseActivity<ActivityExerciseBinding, ExerciseViewModel
     }
 
     private fun showFinishDialog() {
-        finishDialog = AlertDialog.newInstance(
+        finishDialog = DoneDialog.newInstance(
             getString(R.string.finish),
             getString(R.string.you_have_completed_the_exercise),
             getString(R.string.ok)

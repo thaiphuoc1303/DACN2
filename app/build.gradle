@@ -52,6 +52,9 @@ repositories {
 
 
 dependencies {
+    //ANIMATION
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
     // GRAPH
 //    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.STRAIBERRY-AI-INC:Straiberry-charts:1.1.0'
@@ -162,7 +165,7 @@ dependencies {
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
+    implementation "com.google.android.material:material:1.6.1"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation 'androidx.cardview:cardview:1.0.0'
     //For local unit tests

@@ -17,10 +17,11 @@ class ListExerciseAdapter(
         fun bind(item: Exercise) {
             binding.apply {
                 tvExerciseName.text = item.name
-                tvExerciseContent.text = item.description
+                val content = "${item.category} | ${item.calo} calo"
+                tvExerciseContent.text = content
                 // TODO:
                 ivThumbnail.setImageResource(getType(item.name))
-                btnViewMore.setOnClickListener {
+                root.setOnClickListener {
                     itemClickCallback.invoke(item)
                 }
             }

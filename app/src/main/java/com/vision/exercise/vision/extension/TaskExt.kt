@@ -1,4 +1,4 @@
-package com.vision.exercise.vision.demo.kotlin
+package com.vision.exercise.vision.extension
 
 import com.google.android.gms.tasks.OnCanceledListener
 import com.google.android.gms.tasks.OnCompleteListener

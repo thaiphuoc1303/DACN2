@@ -12,12 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-/**
- * Classifies {link Pose} based on given {@link PoseSample}s.
- *
- * <p>Inspired by K-Nearest Neighbors Algorithm with outlier filtering.
- * https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
- */
 public class PoseClassifier {
   private static final String TAG = "PoseClassifier";
   private static final int MAX_DISTANCE_TOP_K = 30;
@@ -42,8 +36,11 @@ public class PoseClassifier {
     this.axesWeights = axesWeights;
   }
 
-
-  // Lấy ra List các tọa độ 3D của Pose
+  /**
+   * List các tọa độ 3D của Pose
+   * @param pose {@link Pose}
+   * @return {@link List<PointF3D>}
+   */
   private static List<PointF3D> extractPoseLandmarks(Pose pose) {
     List<PointF3D> landmarks = new ArrayList<>();
     for (PoseLandmark poseLandmark : pose.getAllPoseLandmarks()) {
@@ -52,12 +49,6 @@ public class PoseClassifier {
     return landmarks;
   }
 
-  /**
-   * Returns the max range of confidence values.
-   *
-   * <p><Since we calculate confidence by counting {@link PoseSample}s that survived
-   * outlier-filtering by maxDistanceTopK and meanDistanceTopK, this range is the minimum of two.
-   */
   public int confidenceRange() {
     return min(maxDistanceTopK, meanDistanceTopK);
   }
@@ -73,7 +64,6 @@ public class PoseClassifier {
       return result;
     }
 
-    // We do flipping on X-axis so we are horizontal (mirror) invariant.
     List<PointF3D> flippedLandmarks = new ArrayList<>(landmarks);
     Utils.multiplyAll(flippedLandmarks, PointF3D.from(-1, 1, 1));
 
@@ -81,17 +71,9 @@ public class PoseClassifier {
     List<PointF3D> flippedEmbedding = PoseEmbedding.getPoseEmbedding(flippedLandmarks);
 
 
-    // Classification is done in two stages:
-    //  * First we pick top-K samples by MAX distance. It allows to remove samples that are almost
-    //    the same as given pose, but maybe has few joints bent in the other direction.
-    //  * Then we pick top-K samples by MEAN distance. After outliers are removed, we pick samples
-    //    that are closest by average.
-
-    // Keeps max distance on top so we can pop it when top_k size is reached.
     PriorityQueue<Pair<PoseSample, Float>> maxDistances = new PriorityQueue<>(
         maxDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second)
     );
-    // Retrieve top K poseSamples by least distance to remove outliers.
     for (PoseSample poseSample : poseSamples) {
       List<PointF3D> sampleEmbedding = poseSample.getEmbedding();
 
@@ -109,18 +91,18 @@ public class PoseClassifier {
                     Utils.multiply(
                         Utils.subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights)));
       }
-      // Set the max distance as min of original and flipped max distance.
+
       maxDistances.add(new Pair<>(poseSample, min(originalMax, flippedMax)));
-      // We only want to retain top n so pop the highest distance.
+
       if (maxDistances.size() > maxDistanceTopK) {
         maxDistances.poll();
       }
     }
 
-    // Keeps higher mean distances on top so we can pop it when top_k size is reached.
+
     PriorityQueue<Pair<PoseSample, Float>> meanDistances = new PriorityQueue<>(
         meanDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second));
-    // Retrive top K poseSamples by least mean distance to remove outliers.
+
     for (Pair<PoseSample, Float> sampleDistances : maxDistances) {
       PoseSample poseSample = sampleDistances.first;
       List<PointF3D> sampleEmbedding = poseSample.getEmbedding();
@@ -133,10 +115,10 @@ public class PoseClassifier {
         flippedSum += Utils.sumAbs(
             Utils.multiply(Utils.subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights));
       }
-      // Set the mean distance as min of original and flipped mean distances.
+
       float meanDistance = min(originalSum, flippedSum) / (embedding.size() * 2);
       meanDistances.add(new Pair<>(poseSample, meanDistance));
-      // We only want to retain top k so pop the highest mean distance.
+
       if (meanDistances.size() > meanDistanceTopK) {
         meanDistances.poll();
       }

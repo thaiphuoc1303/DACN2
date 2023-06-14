@@ -17,3 +17,7 @@ fun View.setBackgroundTint(color: Int) {
 
     backgroundTintList = ColorStateList.valueOf(color)
 }
+
+inline fun View.onClick(crossinline onClick: () -> Unit) {
+    setOnClickListener { onClick() }
+}

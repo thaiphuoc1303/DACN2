@@ -22,4 +22,3 @@ const val LIST_EXERCISE_KEY = "list_exercise"
 
 // INT CONST
 const val DEFAULT_REPEAT = 10
-

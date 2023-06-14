@@ -3,6 +3,7 @@ package com.vision.exercise.vision.ui.exercise_details
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.viewModels
+import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -53,22 +54,35 @@ class ExerciseDetailActivity: BaseActivity<ActivityExerciseDetailBinding, Exerci
 
     private fun initView() {
 //        TODO("Not yet implemented")
-        initializePlayer()
     }
 
-    private fun initializePlayer() {
+    private fun initializePlayer(videoUrl: String) {
         val trackSelector = DefaultTrackSelector(this).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
         }
+        val loadControl = DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                3000, // Min buffer duration
+                10000, // Max buffer duration
+                1500, // Buffer for playback duration
+                2000 // Buffer for playback after rebuffer
+            )
+            .build()
         exoPlayer = ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
+//            .setLoadControl(loadControl)
             .build()
             .also { player ->
-                player.playWhenReady = false
+                binding.playerView.player = player
+                player.playWhenReady = true
                 player.repeatMode = Player.REPEAT_MODE_ONE
                 player.addListener(playbackStateListener())
+                val videoItem = MediaItem.Builder()
+                    .setUri(Uri.parse(videoUrl))
+                    .setMimeType(MimeTypes.APPLICATION_MP4)
+                    .build()
+                player.setMediaItem(videoItem)
                 player.prepare()
-                binding.playerView.player = player
             }
     }
 
@@ -89,7 +103,12 @@ class ExerciseDetailActivity: BaseActivity<ActivityExerciseDetailBinding, Exerci
                     }
                 }
                 ExoPlayer.STATE_ENDED -> {
-
+//                    exoPlayer?.seekTo(0)
+//                    exoPlayer?.let {
+//                        if (!it.isPlaying) {
+//                            it.play()
+//                        }
+//                    }
                 }
                 else -> {
                     //no-ops
@@ -109,17 +128,7 @@ class ExerciseDetailActivity: BaseActivity<ActivityExerciseDetailBinding, Exerci
                 tvDescription.text = it.description
                 tvLevel.text = String.format("Easy | %d Calories Burn", it.calo)
             }
-            playVideo(it.videoUrl)
-        }
-    }
-
-    private fun playVideo(videoUrl: String) {
-        exoPlayer?.also { player ->
-            val videoItem = MediaItem.Builder()
-                .setUri(Uri.parse(videoUrl))
-                .setMimeType(MimeTypes.APPLICATION_MP4)
-                .build()
-            player.setMediaItem(videoItem)
+            initializePlayer(it.videoUrl)
         }
     }
 }

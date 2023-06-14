@@ -14,4 +14,7 @@ interface PracticeDao {
 
     @Query("SELECT * FROM practice ORDER BY timeStamp DESC")
     fun selectAllPractice(): LiveData<List<Practice>>
+
+    @Query("SELECT * FROM practice ORDER BY timeStamp DESC LIMIT 1")
+    fun selectLastPractice(): LiveData<Practice?>
 }

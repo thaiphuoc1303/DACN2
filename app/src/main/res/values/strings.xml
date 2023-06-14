@@ -198,5 +198,11 @@
     <string name="training_history">Training history</string>
     <string name="last_practice">Last practice</string>
     <string name="continue_training">Continue training</string>
+    <string name="close">Close</string>
+    <string name="empty_list">Empty List</string>
+    <string name="category">Category</string>
+    <string name="today_schedule">Today Schedule</string>
+    <string name="bedtime">Bedtime</string>
+    <string name="alarm">Alarm</string>
 
 </resources>

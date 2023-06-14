@@ -76,8 +76,8 @@ internal constructor(
     }
 
     val nose = pose.getPoseLandmark(PoseLandmark.NOSE)
-    val lefyEyeInner = pose.getPoseLandmark(PoseLandmark.LEFT_EYE_INNER)
-    val lefyEye = pose.getPoseLandmark(PoseLandmark.LEFT_EYE)
+    val leftEyeInner = pose.getPoseLandmark(PoseLandmark.LEFT_EYE_INNER)
+    val leftEye = pose.getPoseLandmark(PoseLandmark.LEFT_EYE)
     val leftEyeOuter = pose.getPoseLandmark(PoseLandmark.LEFT_EYE_OUTER)
     val rightEyeInner = pose.getPoseLandmark(PoseLandmark.RIGHT_EYE_INNER)
     val rightEye = pose.getPoseLandmark(PoseLandmark.RIGHT_EYE)
@@ -112,9 +112,9 @@ internal constructor(
     val rightFootIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_FOOT_INDEX)
 
     // Face
-    drawLine(canvas, nose, lefyEyeInner, whitePaint)
-    drawLine(canvas, lefyEyeInner, lefyEye, whitePaint)
-    drawLine(canvas, lefyEye, leftEyeOuter, whitePaint)
+    drawLine(canvas, nose, leftEyeInner, whitePaint)
+    drawLine(canvas, leftEyeInner, leftEye, whitePaint)
+    drawLine(canvas, leftEye, leftEyeOuter, whitePaint)
     drawLine(canvas, leftEyeOuter, leftEar, whitePaint)
     drawLine(canvas, nose, rightEyeInner, whitePaint)
     drawLine(canvas, rightEyeInner, rightEye, whitePaint)
@@ -164,7 +164,7 @@ internal constructor(
     }
   }
 
-  internal fun drawPoint(canvas: Canvas, landmark: PoseLandmark, paint: Paint) {
+  private fun drawPoint(canvas: Canvas, landmark: PoseLandmark, paint: Paint) {
     val point = landmark.position3D
     updatePaintColorByZValue(
       paint,
@@ -178,7 +178,7 @@ internal constructor(
     canvas.drawCircle(translateX(point.x), translateY(point.y), DOT_RADIUS, paint)
   }
 
-  internal fun drawLine(
+  private fun drawLine(
     canvas: Canvas,
     startLandmark: PoseLandmark?,
     endLandmark: PoseLandmark?,
@@ -210,9 +210,9 @@ internal constructor(
 
   companion object {
 
-    private val DOT_RADIUS = 8.0f
-    private val IN_FRAME_LIKELIHOOD_TEXT_SIZE = 30.0f
-    private val STROKE_WIDTH = 10.0f
-    private val POSE_CLASSIFICATION_TEXT_SIZE = 20.0f
+    private const val DOT_RADIUS = 8.0f
+    private const val IN_FRAME_LIKELIHOOD_TEXT_SIZE = 30.0f
+    private const val STROKE_WIDTH = 10.0f
+    private const val POSE_CLASSIFICATION_TEXT_SIZE = 20.0f
   }
 }
